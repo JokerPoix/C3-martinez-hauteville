@@ -5,7 +5,6 @@ class TournamentGenerator {
       this.finalStages = []; // Les phases finales
   }
 
-
   generatePoules() {
       let shuffledTeams = [...this.teams].sort(() => 0.5 - Math.random());
       const nbPoules = Math.floor(shuffledTeams.length / 4);
@@ -14,7 +13,6 @@ class TournamentGenerator {
       }
       console.log("Poules générées :", this.poules);
   }
-
 
   simulatePoulesMatches() {
       let qualifiedTeams = [];
@@ -25,6 +23,16 @@ class TournamentGenerator {
       console.log("Équipes qualifiées pour les phases finales :", this.finalStages[0]);
   }
 
+  resolveTies() {
+    if (this.finalStages.length === 0) {
+      this.finalStages.push([]);
+    }
+    const poulesWithTiesResolved = this.poules.map(poule => {
+      return poule.sort((a, b) => b.tieBreakerScore - a.tieBreakerScore).slice(0, 2);
+    });
+    const resolvedQualifiedTeams = poulesWithTiesResolved.flat();
+    this.finalStages[0] = resolvedQualifiedTeams; 
+  }
 
   generateFinalStages() {
       let currentStage = this.finalStages[0];
@@ -43,6 +51,7 @@ class TournamentGenerator {
   generateTournament() {
       this.generatePoules();
       this.simulatePoulesMatches();
+      this.resolveTies();
       this.generateFinalStages();
       return this.finalStages;
   }
