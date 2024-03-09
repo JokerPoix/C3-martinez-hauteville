@@ -45,3 +45,22 @@ describe('TournamentGenerator functionality', () => {
   });
 });
 
+describe('TeamGenerator TDD unity', () => {
+    it('should create balanced teams based on player skill levels', () => {
+      const players = [
+        { name: 'Player1', skill: 5 },
+        { name: 'Player2', skill: 4 },
+        { name: 'Player3', skill: 5 },
+        { name: 'Player4', skill: 4 },
+        { name: 'Player5', skill: 3 },
+        { name: 'Player6', skill: 3 }
+      ];
+      const teamGenerator = new TeamGenerator(players, 3, true); 
+      teamGenerator.generateTeams();
+      const teams = teamGenerator.getTeams();
+  
+      const teamsSkillSum = teams.map(team => team.players.reduce((sum, player) => sum + player.skill, 0));
+      expect(teamsSkillSum[0]).to.be.closeTo(teamsSkillSum[1], 1); 
+    });
+  });
+  
