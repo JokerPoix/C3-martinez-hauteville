@@ -64,3 +64,13 @@ describe('TeamGenerator TDD unity', () => {
     });
   });
   
+  describe('TournamentGenerator TDD integration', () => {
+    it('should handle tie matches in poules correctly', () => {
+      const teams = new Array(4).fill().map((_, index) => ({ name: `Team ${index + 1}`, players: [], points: 0 }));
+      const tournamentGenerator = new TournamentGenerator(teams);
+      tournamentGenerator.poules = [[teams[0], teams[1]], [teams[2], teams[3]]];
+      teams.forEach(team => team.points = 1);       
+      tournamentGenerator.resolveTies();   
+      expect(tournamentGenerator.finalStages[0].length).to.be.greaterThan(0);
+    });
+  });
